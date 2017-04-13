@@ -1,0 +1,9 @@
+.log/
+.settings/
+log/
+.classpath
+.project
+Reports
+.xls
+.xlsx
+.tmp

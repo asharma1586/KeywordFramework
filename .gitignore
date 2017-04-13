@@ -1,4 +1,4 @@
-.log/
+*.log
 .settings/
 log/
 .classpath
@@ -7,3 +7,4 @@ Reports
 .xls
 .xlsx
 .tmp
+target

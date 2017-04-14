@@ -6,15 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelUtilities extends Constants {
+public class ExcelUtilities extends Constants 
+{
 	
 	private static XSSFSheet ExcelWSheet;
     private static XSSFWorkbook ExcelWBook;
@@ -24,109 +22,86 @@ public class ExcelUtilities extends Constants {
 //This method is to set the File path and to open the Excel file
 //Pass Excel Path and SheetName as Arguments to this method. It returns the number of rows in the sheet.
     
-public static int setExcelFilePath(String Path,String SheetName)    {
-	
-	
-        FileInputStream ExcelFile = null;
-		try {
+    public static int setExcelFilePath(String Path,String SheetName)    
+    {
+    	FileInputStream ExcelFile = null;
+		try 
+		{
 			ExcelFile = new FileInputStream(Path);
-		} catch (FileNotFoundException e2) {
-			// TODO Auto-generated catch block
+		} 
+		catch (FileNotFoundException e2) 
+		{	
 			e2.printStackTrace();
 			System.out.println("Issues with Excel File: "+ Path+". Please check if this file is readable.");
 		}
         int iRowNum=0;
         //System.out.println("Able to access Excel file");
-        try {
+        try 
+        {
 			ExcelWBook = new XSSFWorkbook(ExcelFile);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+		} 
+        catch (IOException e1) 
+        {
 			e1.printStackTrace();
 			System.out.println("Issues with Excel file: "+Path+". Not able to read it as excel file.");
 		}
-       
-    	   ExcelWSheet = ExcelWBook.getSheet(SheetName);
-    	   //ExcelWSheet.getLastRowNum();
-	
-       
+        ExcelWSheet = ExcelWBook.getSheet(SheetName);
        iRowNum=ExcelWSheet.getLastRowNum();
-       
-      /*  for(iRowNum=0;iRowNum<=ExcelWSheet.getLastRowNum();iRowNum++)
-        {
-        	 Row r = ExcelWSheet.getRow(iRowNum);
-             if (r != null) {
-            	// System.out.println(r.toString());
-            	 //System.out.println(iRowNum);
-             }
-             else
-             {
-            	// System.out.println("TOtal value of Rows are:- "+iRowNum);
-             }
-        }
-        */
         return iRowNum;
 }
 
-public static int setTestDataFilePath(String PathofTS,String SheetNameofTestData) throws Exception {
+public static int setTestDataFilePath(String PathofTS,String SheetNameofTestData) throws Exception 
+{
     FileInputStream ExcelFile = new FileInputStream(PathofTS);
     int colCount=0;
-    //System.out.println("Able to access Excel file");
     ExcelWBook = new XSSFWorkbook(ExcelFile);
-  // try {
     ExcelWSheet = ExcelWBook.getSheet(SheetNameofTestData);
     Iterator<Row> rowIterator = ExcelWSheet.rowIterator();
     if (rowIterator.hasNext())
-       {
-           Row headerRow = (Row) rowIterator.next();
-           //get the number of cells in the header row
-           colCount = headerRow.getPhysicalNumberOfCells();
-       }
-       
+    {
+    	Row headerRow = (Row) rowIterator.next();
+        //get the number of cells in the header row
+        colCount = headerRow.getPhysicalNumberOfCells();
+    }   
     return colCount;
 }
 
-
-public static String getCellData(int RowNum, int ColNum){
-	
+public static String getCellData(int RowNum, int ColNum)
+{	
 	String CellData="";
 	Cell = ExcelWSheet.getRow(RowNum).getCell(ColNum);
-      try{
-    	  
-    	  if(Cell==null)
-    	  {
-    	  //Cell.setCellType(Cell.CELL_TYPE_STRING);
+	try
+	{
+		if(Cell==null)
+		{
     	  CellData="";
-    	  }
-    	  
-    	  else
-    	  {
+    	}  
+    	else
+    	{
     	  Cell.setCellType(Cell.CELL_TYPE_STRING);
     	  CellData = Cell.getStringCellValue();
-    	  }
-    	  
-      }
-      catch(Exception e)
-      {
-    	  CellData="";
-    	  e.printStackTrace();
-      }
-	  
-      return CellData;
-	}
+    	}  
+     }
+     catch(Exception e)
+     {
+    	 CellData="";
+    	 e.printStackTrace();
+     }
+     return CellData;
+}
 
-public static int getNumericCellData(int RowNum, int ColNum){
-	
+public static int getNumericCellData(int RowNum, int ColNum)
+{	
 	int CellData=1;
-	Cell = ExcelWSheet.getRow(RowNum).getCell(ColNum);
-	
+	Cell = ExcelWSheet.getRow(RowNum).getCell(ColNum);	
 	if(Cell==null)
 	{
 		CellData=1;
 	}
 	else
 	{
-	
-      try{
+      try
+      {
     	  Cell.setCellType(Cell.CELL_TYPE_NUMERIC);
     	  CellData = (int) Cell.getNumericCellValue();
       }
@@ -138,26 +113,16 @@ public static int getNumericCellData(int RowNum, int ColNum){
       
 	}
 	return CellData;
-	}
+}
 
-public static int getColCount(String PathofTS,String sheetName,int rowNum) throws Exception {
+public static int getColCount(String PathofTS,String sheetName,int rowNum) throws Exception 
+{
     FileInputStream ExcelFile = new FileInputStream(PathofTS);
     int colCount=0;
-    //System.out.println("Able to access Excel file");
     ExcelWBook = new XSSFWorkbook(ExcelFile);
-  // try {
     ExcelWSheet = ExcelWBook.getSheet(sheetName);
     Iterator<Row> rowIterator = ExcelWSheet.rowIterator();
-    /*if (rowIterator.hasNext())
-       {
-           Row headerRow = (Row) rowIterator.next();
-           //get the number of cells in the header row
-           colCount = headerRow.getPhysicalNumberOfCells();
-           //rowNum=headerRow.getRowNum();
-       }*/
-    colCount=ExcelWSheet.getRow(rowNum-1).getLastCellNum();
-    
-       
+    colCount=ExcelWSheet.getRow(rowNum-1).getLastCellNum();  
     return colCount;
 }
 
@@ -165,21 +130,13 @@ public static int getColCount(String PathofTS,String sheetName,int rowNum) throw
 public static List<String> getValuesFromScript(String scriptPath,String sheetName,int scriptRow) throws Exception
 {
 	ArrayList<String> scriptVals=new ArrayList<String> ();
-	/*int countofTestScriptRows=*/
 	int rowCount=ExcelUtilities.setExcelFilePath(scriptPath, sheetName);
-	
 	int colCount=getColCount(scriptPath, sheetName,scriptRow);
-	
 	for(int cols=1;cols<colCount;cols++)
 	{
-	scriptVals.add(ExcelUtilities.getCellData(scriptRow, cols));
-	/*scriptVals.add(ExcelUtilities.getCellData(scriptRow, 2));
-	scriptVals.add(ExcelUtilities.getCellData(scriptRow, 3));
-	scriptVals.add(ExcelUtilities.getCellData(scriptRow, 4));
-	scriptVals.add(ExcelUtilities.getCellData(scriptRow, 5));*/
+		scriptVals.add(ExcelUtilities.getCellData(scriptRow, cols));
 	}
 	System.out.println(scriptVals.toString());
-	
 	return scriptVals;
 }
 
@@ -192,86 +149,36 @@ public static String getTestData(String scriptPath,String scriptData,int iterati
 	//Reading TestData
 	if(scriptData.startsWith("DP_"))
 	{
-		//sData=sData.substring(3); System.out.println(sData);
 		countofTestDataRows=ExcelUtilities.setExcelFilePath(scriptPath, "TestData");
-	    //System.out.println("countofTestDataRows :"+ countofTestDataRows);
 		countofTestDataColumns=ExcelUtilities.getColCount(scriptPath, "TestData",countofTestDataRows);
-	    //System.out.println("countofTestDataColumns :"+ countofTestDataColumns);
-		
 		for(int i=0;i<countofTestDataColumns;i++)
-			
 		{
-			
 			String DataColmn = ExcelUtilities.getCellData(0, i);
 			if(scriptData.equals(DataColmn))
 			{
 				scriptData=ExcelUtilities.getCellData(iterationValue,i);
-			}
-			
-			/*else
-			{
-				//System.out.println("Data not matching");
-			}*/	
+			}	
 		}
 	}
 	if(scriptData.startsWith("GD_"))
 	{
 		int countofGDRows=ExcelUtilities.setExcelFilePath(GDPath, "Global_Data");
-		//int countofGDColumns=ExcelUtilities.getColCount(GDPath, "Global_Data",countofGDRows);
-		//System.out.println("Count of rows in OR Excel: " +countofORRows);
-					
 		for(int gdRow=1; gdRow<=countofGDRows; gdRow++)
 		{
 			String gdData= ExcelUtilities.getCellData(gdRow,0);
-			//System.out.println(sLocatorName+"------------"+orLocatorName);
-			
-			
 			if(scriptData.equalsIgnoreCase(gdData))
 			{
-				//orlocatorType=ExcelUtilities.getCellData(orRow, 2);
-				//orlocatorValue=ExcelUtilities.getCellData(orRow, 3);
-				scriptData=ExcelUtilities.getCellData(gdRow, 1);
-				
+				scriptData=ExcelUtilities.getCellData(gdRow, 1);	
 				break;
 			}
+		}
 	}
-}
-	
 	else
 	{
-		//scriptData=scriptData;
 		System.out.println("Value of SCriptData:"+scriptData);
 	}
 	return scriptData;
-	}
-
-/*public static List<String> getORData(String repoPath,String orPageName,String scriptLocatorName) throws Exception
-{
-	ArrayList<String> orVals=new ArrayList<String> ();
-	int countofORRows=ExcelUtilities.setExcelFilePath(repoPath, orPageName);
-	//System.out.println("Count of rows in OR Excel: " +countofORRows);
-				
-	for(int orRow=1; orRow<countofORRows; orRow++)
-	{
-		String orLocatorName= ExcelUtilities.getCellData(orRow,1);
-		//System.out.println(sLocatorName+"------------"+orLocatorName);
-		
-		
-		if(scriptLocatorName.equalsIgnoreCase(orLocatorName))
-		{
-			//orlocatorType=ExcelUtilities.getCellData(orRow, 2);
-			//orlocatorValue=ExcelUtilities.getCellData(orRow, 3);
-			orVals.add(ExcelUtilities.getCellData(orRow, 2));
-			orVals.add(ExcelUtilities.getCellData(orRow, 3));
-			break;
-		}
-		else
-		{
-			System.out.println("Please check OR File and fields as well or This field don't need the OR Values");
-		}
-	}
-	return orVals;
-}*/
+}
 
 public static String[] getORData(String repoPath,String orPageName,String scriptLocatorName) throws Exception
 {
@@ -283,35 +190,18 @@ public static String[] getORData(String repoPath,String orPageName,String script
 	}
 	
 	int countofORRows=ExcelUtilities.setExcelFilePath(repoPath, orPageName);
-	//System.out.println("Count of rows in OR Excel: " +countofORRows);
-				
 	for(int orRow=1; orRow<=countofORRows; orRow++)
 	{
 		String orLocatorName= ExcelUtilities.getCellData(orRow,1);
-		//System.out.println(sLocatorName+"------------"+orLocatorName);
-		
-		
 		if(scriptLocatorName.equalsIgnoreCase(orLocatorName))
 		{
-			//orlocatorType=ExcelUtilities.getCellData(orRow, 2);
-			//orlocatorValue=ExcelUtilities.getCellData(orRow, 3);
 			orVals[0]=ExcelUtilities.getCellData(orRow, 2);
 			orVals[1]=ExcelUtilities.getCellData(orRow, 3);
 			break;
 		}
-		/*else
-		{
-			System.out.println("Please check OR File and fields as well or This field don't need the OR Values");
-		}*/
 	}
 	valOfORPageName=orPageName; 
 	return orVals;
 }
-
-
-
-
-
-
 
 }

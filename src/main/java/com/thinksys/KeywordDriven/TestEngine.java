@@ -18,18 +18,12 @@ import com.thinksys.Utilities.ReadReusable;
 import com.thinksys.Utilities.Validations;
 import com.thinksys.configuration.Action_Keywords;
 
-public class TestEngine {	
-	
-	/**
-	 * @param args
-	 * @throws Exception
-	 */
-	
+public class TestEngine 
+{	
 	
 	static String date = "";
 	static String time = "";
 	static String str;
-	
 	
 	static
 	{	
@@ -41,9 +35,8 @@ public class TestEngine {
 		time = timexml.format(new Date());
 	}
 	
-	public static void main(String[] args) throws Exception {
-		
-		
+	public static void main(String[] args) throws Exception 
+	{
 		System.out.println("Welcome to Krypton 2.0");
 		System.out.println("Let's Start with the validations");
 		Validations valid=new Validations();
@@ -67,14 +60,6 @@ public class TestEngine {
 		//TO get the count of rows from test script and OR we have defined below variables
 		
 		int countofTestScriptRows=0;
-		
-		//Below variables are defined to fetch the values from Script,OR and GD.
-		/*int countofORRows=0;
-		boolean status=true;*/
-		
-		/*String scriptPath = ".\\ExcelTestFiles\\TestScript.xlsx";
-		String repositoryPath= ".\\ExcelTestFiles\\Object Repository.xlsx";
-		*/
 		String sNo="";
 		String stestcaseID="";
 		String scriptPageName = null;
@@ -84,127 +69,105 @@ public class TestEngine {
 		String script_reusable_Iteration=null;
 		String orlocatorType="";
 		String orlocatorValue="";
-		
-		Constants cons=new Constants();
-
-		//condition to check weather args of Main class has data in it or not
-		
-				String testScriptPath=null;
-				if(args.length==0)
-				{
-					File directory = new File(cons.scriptfolder);
-					
-					File[] fList = directory.listFiles();
-					
-					System.out.println(directory.getAbsolutePath());
-					System.out.println(fList[0].toString());
-					
-					testScriptPath=fList[0].toString();
-				}
-				else
-				{
-					testScriptPath=args[0];
-				}
-		
-				
-				
 		String valueOfTestID="";
-		
 		int countofTestDataRows;
 		int countofTestDataColumns;
 		
 		ArrayList<testresultXMLUtility> al = null;
 		al=new ArrayList<testresultXMLUtility>();
 		
-				
+		Constants cons=new Constants();
+		//condition to check weather args of Main class has data in it or not
+		
+		String testScriptPath=null;
+		if(args.length==0)
+		{
+			File directory = new File(cons.scriptfolder);
+			File[] fList = directory.listFiles();
+			System.out.println(directory.getAbsolutePath());
+			System.out.println(fList[0].toString());
+			testScriptPath=fList[0].toString();
+		}
+		else
+		{
+			testScriptPath=args[0];
+		}		
+			
 		//Here we are passing the Excel path and SheetName to connect with the Excel file
 		countofTestScriptRows=ExcelUtilities.setExcelFilePath(testScriptPath, "TestSteps");
 		System.out.println("Count of rows in TestScript Excel: " +countofTestScriptRows);
-		
 		int globalIterationCount=ExcelUtilities.getNumericCellData(0, 1);
 		System.out.println("Global Iteration Count : " +globalIterationCount);
 		
-		
-		  for(int itr=1;itr<=globalIterationCount;itr++){
+		 for(int itr=1;itr<=globalIterationCount;itr++)
+		 {
 		  //It means this loop will execute all the steps mentioned for the test case in Test Steps sheet
-		    for(int sRow=2; sRow<countofTestScriptRows; sRow++){
-		    	
-			    countofTestScriptRows=ExcelUtilities.setExcelFilePath(testScriptPath, "TestSteps");
-			    sNo=ExcelUtilities.getCellData(sRow, 0);
-			    stestcaseID=ExcelUtilities.getCellData(sRow, 1);
-			    scriptPageName = ExcelUtilities.getCellData(sRow, 2);
-			    scriptLocatorName = ExcelUtilities.getCellData(sRow, 3);
-			    scriptActionKeyword = ExcelUtilities.getCellData(sRow, 4);
-			    scriptData= ExcelUtilities.getCellData(sRow, 5);
-			    script_reusable_Iteration=ExcelUtilities.getCellData(sRow,6);
-			    System.out.println(script_reusable_Iteration);
-			
-			    if(stestcaseID==null||stestcaseID.equalsIgnoreCase(""))
-			    {
-			    	stestcaseID=valueOfTestID;
-			    }
-			    valueOfTestID=stestcaseID;
-			    
-			    //System.out.println(stestcaseID);
+		 for(int sRow=2; sRow<countofTestScriptRows; sRow++)
+		 {
+			 countofTestScriptRows=ExcelUtilities.setExcelFilePath(testScriptPath, "TestSteps");
+			 sNo=ExcelUtilities.getCellData(sRow, 0);
+			 stestcaseID=ExcelUtilities.getCellData(sRow, 1);
+			 scriptPageName = ExcelUtilities.getCellData(sRow, 2);
+			 scriptLocatorName = ExcelUtilities.getCellData(sRow, 3);
+			 scriptActionKeyword = ExcelUtilities.getCellData(sRow, 4);
+			 scriptData= ExcelUtilities.getCellData(sRow, 5);
+			 script_reusable_Iteration=ExcelUtilities.getCellData(sRow,6);
+			 System.out.println(script_reusable_Iteration);
 			 
+			 if(stestcaseID==null||stestcaseID.equalsIgnoreCase(""))
+			 {
+			   	stestcaseID=valueOfTestID;
+			 }
+			 valueOfTestID=stestcaseID;
+			 
+			 System.setProperty("LogFile", stestcaseID);
+			 Logger debugLog = Logger.getLogger("debugLogger");
+			 Logger resultLog = Logger.getLogger("reportsLogger");
+			 PropertyConfigurator.configure("C:\\Users\\Anamika\\git\\KeywordDriven\\KeywordDriven_Framework\\log4j.properties");
+			 System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.Jdk14Logger");
 			    
-			    System.setProperty("LogFile", stestcaseID);
-			    Logger debugLog = Logger.getLogger("debugLogger");
-				Logger resultLog = Logger.getLogger("reportsLogger");
-				
-				PropertyConfigurator.configure("C:\\Users\\Anamika\\git\\KeywordDriven\\KeywordDriven_Framework\\log4j.properties");
-				System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.Jdk14Logger");
-			    
-			   
-			    try {
-					if(scriptActionKeyword.isEmpty()||scriptActionKeyword=="")
-					{
-						scriptActionKeyword="EMPTY";
-						throw new KryptonException("Action Keyword is missing. Please enter Action Keyword to perform an action.");
-					}
-				} 
-			    catch (KryptonException ke) 
-			    {
-					System.out.println("Action Keyword is missing. Please enter Action Keyword to perform an action.");
-					resultLog.info("TestCaseID: "+stestcaseID+" "+"TestStep#: "+sNo+";"+" "+"Action Keyword: "+scriptActionKeyword+";"+" "+ke.getMessage());
-					debugLog.info("TestCaseID: "+stestcaseID+" "+"TestStep#: "+sNo+";"+" "+"Action Keyword: "+scriptActionKeyword+";"+" "+ke.getMessage());
-			    }
-			    catch (Exception e)
-			    {
-			    	resultLog.info("TestCaseID: "+stestcaseID+" "+"TestStep#: "+sNo+";"+" "+"Action Keyword: "+scriptActionKeyword+";"+" "+e.getStackTrace());
-			    	debugLog.info("TestCaseID: "+stestcaseID+" "+"TestStep#: "+sNo+";"+" "+"Action Keyword: "+scriptActionKeyword+";"+e.getStackTrace());
-			    }
-			    
-			  //Reusable Execution
-					if(scriptActionKeyword.equalsIgnoreCase("Reusable")){
-						System.out.println("In TestEngine, Reusable Action is: "+ scriptData+" and Reuable Iteration value is:"+ script_reusable_Iteration );
-						new ReadReusable(scriptData,script_reusable_Iteration);
-						continue;
-					}
-			
-					
-					
-					//getting scriptData from the getTestData method
-					
-					//if(scriptData.startsWith("DP_")){
-					scriptData=ExcelUtilities.getTestData(testScriptPath,scriptData,itr);
-					//}
-
-					//getORData
-					System.out.println(scriptLocatorName);
-					if(! scriptLocatorName.equalsIgnoreCase("")){
-						
-					String orData[]= ExcelUtilities.getORData(cons.repositoryPath,scriptPageName,scriptLocatorName);
-					
-						orlocatorType=orData[0];
-						orlocatorValue=orData[1];
-					
+			 try 
+			 {
+				if(scriptActionKeyword.isEmpty()||scriptActionKeyword=="")
+				{
+					scriptActionKeyword="EMPTY";
+					throw new KryptonException("Action Keyword is missing. Please enter Action Keyword to perform an action.");
 				}
+			} 
+		    catch (KryptonException ke) 
+		    {
+				System.out.println("Action Keyword is missing. Please enter Action Keyword to perform an action.");
+				resultLog.info("TestCaseID: "+stestcaseID+" "+"TestStep#: "+sNo+";"+" "+"Action Keyword: "+scriptActionKeyword+";"+" "+ke.getMessage());
+				debugLog.info("TestCaseID: "+stestcaseID+" "+"TestStep#: "+sNo+";"+" "+"Action Keyword: "+scriptActionKeyword+";"+" "+ke.getMessage());
+		    }
+		    catch (Exception e)
+		    {
+		    	resultLog.info("TestCaseID: "+stestcaseID+" "+"TestStep#: "+sNo+";"+" "+"Action Keyword: "+scriptActionKeyword+";"+" "+e.getStackTrace());
+			   	debugLog.info("TestCaseID: "+stestcaseID+" "+"TestStep#: "+sNo+";"+" "+"Action Keyword: "+scriptActionKeyword+";"+e.getStackTrace());
+		    }
+			    
+		  //Reusable Execution
+			if(scriptActionKeyword.equalsIgnoreCase("Reusable"))
+			{
+				System.out.println("In TestEngine, Reusable Action is: "+ scriptData+" and Reuable Iteration value is:"+ script_reusable_Iteration );
+				new ReadReusable(scriptData,script_reusable_Iteration);
+				continue;
+			}
+					
+		//getting scriptData from the getTestData method
+			scriptData=ExcelUtilities.getTestData(testScriptPath,scriptData,itr);
+
+		//getORData
+			System.out.println(scriptLocatorName);
+			if(! scriptLocatorName.equalsIgnoreCase(""))
+			{			
+					String orData[]= ExcelUtilities.getORData(cons.repositoryPath,scriptPageName,scriptLocatorName);		
+					orlocatorType=orData[0];
+					orlocatorValue=orData[1];
+			}
 			  
-			
-			 			
-			 //A method of class Action_Keywords
-			boolean a=execute_Actions(scriptActionKeyword,orlocatorType,orlocatorValue,scriptData,sNo, stestcaseID, debugLog, resultLog);
+		 //A method of class Action_Keywords
+			boolean a=execute_Actions(scriptActionKeyword,orlocatorType,orlocatorValue,scriptData,sNo,stestcaseID,debugLog,resultLog);
 			
 			str = String.valueOf(a);
 			if(str == "true"){
@@ -212,9 +175,8 @@ public class TestEngine {
 			}else{
 				str = "Fail";
 			}
-			 testresultXMLUtility val = new testresultXMLUtility(sNo, date, time, str);
-			 al.add(val);
-			
+			testresultXMLUtility val = new testresultXMLUtility(sNo, date, time, str);
+			al.add(val);
 			int length = al.size();
 		
 		    if(length == countofTestScriptRows - 2)
@@ -222,10 +184,7 @@ public class TestEngine {
 		    	testresultXMLUtility xml=new testresultXMLUtility(sNo, date, time, str);	
 				 xml.resultXMLUtility(al);
 		    }
-		    
-		    
-		
-		    }
+		 }
 	 }		
 }
 		
@@ -237,4 +196,3 @@ public class TestEngine {
 		return value;
 	}
 }
-

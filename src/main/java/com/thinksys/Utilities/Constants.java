@@ -1,7 +1,7 @@
 package com.thinksys.Utilities;
 
-public class Constants {
-	
+public class Constants 
+{	
 	//Declaring the path of the Excel file with the name of the Test Script..We will remove the hard coded value afterwards
 	public static String directoryPath= ".\\ExcelTestFiles";
 	public static String GDPath= ".\\ExcelTestFiles\\Global Data\\GD.xlsx";
